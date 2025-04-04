@@ -13,4 +13,16 @@ export type CartItemData ={
     category: string;
     price: number;
     quantity:number;
+
 }
+
+
+export type Order = {
+    id: number;
+    userId: string;
+    items: Array<{ id: number; name: string; price: number; quantity: number }>;
+    totalPrice: number;
+    date: string;
+    address: string;
+    status: string;
+  }
