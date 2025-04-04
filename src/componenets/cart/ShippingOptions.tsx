@@ -1,5 +1,5 @@
 
-export default  function ShippingOptions({ cartItems }: { cartItems: any[] }) {
+export default  function ShippingOptions() {
   const shippingOptions = [
     { name: "Standard Shipping", price: 5.0 },
     { name: "Express Shipping", price: 15.0 },

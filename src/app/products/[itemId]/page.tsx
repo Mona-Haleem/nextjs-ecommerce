@@ -1,3 +1,4 @@
+import AddToCartButton from '@/componenets/addToCartBtn';
 import axios from 'axios';
 import Image from 'next/image';
 
@@ -36,9 +37,7 @@ const ProductPage = async ({ params }: ProductProps) => {
           <p className="text-lg text-purple-600 font-semibold"><b>Price: </b>${product.price}</p>
           <p className="text-black font-bold text-lg">Description: </p>
           <p className="text-gray-700 ml-5"> {product.description}</p>
-          <button className="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-blue-700 transition">
-            Add to Cart
-          </button>
+         <AddToCartButton product={product}/>
         </div>
       </div>
     </div>

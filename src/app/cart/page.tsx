@@ -1,5 +1,4 @@
 import CartItems from '@/componenets/cart/CartItems'
-import QueryProvider from '@/componenets/layout/QueryProvider'
 import React from 'react'
 
 export default function Cart() {

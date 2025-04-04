@@ -1,20 +1,21 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
+import { CartItemData } from "@/lib/types";
 
-export default function QuantityAdjust({ item }: { item: any }) {
-  const { updateCart } = useCart();
+export default function QuantityAdjust({ item }: { item: CartItemData }) {
+  const { cartItems, updateCart } = useCart();
 
   const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity < 1) return; 
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const updatedItem = updatedCart.map((cartItem: any) => {
-      if (cartItem.id === item.id) {
-        return { ...cartItem, quantity: newQuantity };
-      }
-      return cartItem;
-    });
-    updateCart.mutate(updatedItem);
+    if (!cartItems || newQuantity < 1) return;
+
+    const updatedItems = cartItems.items.map((cartItem) =>
+      cartItem.id === item.id
+        ? { ...cartItem, quantity: newQuantity }
+        : cartItem
+    );
+
+    updateCart.mutate(updatedItems);
   };
 
   return (

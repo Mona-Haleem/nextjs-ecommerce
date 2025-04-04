@@ -15,10 +15,11 @@ export default function CartItems() {
   return (
     <>
      <div className="space-y-4">
-          {cartItems?.map((item: CartItemData) => (<CartItem key={item.id} item={item} /> ))}
+          {cartItems?.items?.map((item: CartItemData) => (<CartItem key={item.id} item={item} /> ))}
     </div>
-    <CartTotal cartItems={cartItems} />
-    <ShippingOptions cartItems={cartItems}/>
+    <CartTotal cartItems={cartItems?.items} />
+    <ShippingOptions />
+    
     </>
   )
 }

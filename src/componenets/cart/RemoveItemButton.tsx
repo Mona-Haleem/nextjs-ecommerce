@@ -3,13 +3,16 @@
 import { useCart } from "@/hooks/useCart";
 
 export default function ItemRemoval({ itemId }: { itemId: number }) {
-  const { updateCart } = useCart();
+  const { cartItems, updateCart } = useCart();
 
   const handleRemoveItem = () => {
-    const updatedCart = JSON.parse(localStorage.getItem("cart") || "[]").filter(
-      (item: any) => item.id !== itemId
+    if (!cartItems) return;
+
+    const updatedItems = cartItems.items.filter(
+      (item) => item.id !== itemId
     );
-    updateCart.mutate(updatedCart);
+
+    updateCart.mutate(updatedItems);
   };
 
   return (

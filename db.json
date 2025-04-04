@@ -13,7 +13,40 @@
       "image": "https://scontent.fcai19-3.fna.fbcdn.net/v/t1.30497-1/84628273_176159830277856_972693363922829312_n.jpg?stp=c379.0.1290.1290a_cp0_dst-jpg_s50x50_tt6&_nc_cat=1&ccb=1-7&_nc_sid=7565cd&_nc_ohc=T3A8sRb2a9wQ7kNvwHa8zmq&_nc_oc=AdmyihFe0o24MST26wPtTmkzPSpuVRd-YKhjWb824IQs9w3ojq8D03do8cH3Hm1v5Cc&_nc_zt=24&_nc_ht=scontent.fcai19-3.fna&edm=AP4hL3IEAAAA&oh=00_AYEBWiksIccnm9vm6Y15mnr8lgTXhrTr5QD02I5UpKiXnw&oe=681768D9"
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "id": "1",
+      "userId": "3e61727a-3f53-4e2f-bbcc-983bd523c57e",
+      "items": [
+        {
+          "id": 3,
+          "title": "Mens Cotton Jacket",
+          "price": 55.99,
+          "description": "great outerwear jackets for Spring/Autumn/Winter, suitable for many occasions, such as working, hiking, camping, mountain/rock climbing, cycling, traveling or other outdoors. Good gift choice for you or your family member. A warm hearted love to Father, husband or son in this thanksgiving or Christmas Day.",
+          "category": "men's clothing",
+          "image": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
+          "rating": {
+            "rate": 4.7,
+            "count": 500
+          },
+          "quantity": 1
+        },
+        {
+          "id": 1,
+          "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+          "price": 109.95,
+          "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+          "category": "men's clothing",
+          "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+          "rating": {
+            "rate": 3.9,
+            "count": 120
+          },
+          "quantity": 1
+        }
+      ]
+    }
+  ],
   "orders": [
     {
       "id": "1",
@@ -58,6 +91,5 @@
       "date": "2023-10-03",
       "status": "delivered"
     }
-
   ]
 }

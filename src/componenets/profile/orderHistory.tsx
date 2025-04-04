@@ -15,10 +15,9 @@ async function fetchOrderHistory(userId: string) {
 }
 
 export default async function OrderHistory() {
-    const session = await auth()
-    const userId = session?.user.id;
+  const session = await auth()
+  const userId = session!.user.id;
   const orders = await fetchOrderHistory(userId);
-  console.log("Order History:", orders);
 
   return (
     <div className='flex flex-col items-center justify-center p-4'>

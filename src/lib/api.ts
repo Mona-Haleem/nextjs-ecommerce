@@ -23,13 +23,24 @@ export const fetchCategories = async () => {
   return response.data;
 };
 
-export const getCartItems = () => {
-  const cart = localStorage.getItem("cart");
-  return cart ? JSON.parse(cart) : [];
+export const getCartItems = async (userId: string) => {
+  const response = await axios.get(`http://localhost:3001/cart?userId=${userId}`);
+  const carts = response.data;
+  console.log("Carts:-----------------------------", carts);
+  if (!carts.length) return null;
+  return carts[0];
 };
 
-export const updateCartInStorage = (newCart: CartItemData[]) => {
-  localStorage.setItem("cart", JSON.stringify(newCart));
+export const updateCartInStorage = async (userId: string, newCart: CartItemData[]) => {
+  const response = await axios.get(`http://localhost:3001/cart?userId=${userId}`);
+  const cart = response.data[0];
+
+  if (!cart) throw new Error("Cart not found");
+
+  await axios.put(`http://localhost:3001/cart/${cart.id}`, {
+    ...cart,
+    items: newCart,
+  });
 };
 
 export async function fetchUserData(userId: string) {

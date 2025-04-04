@@ -1,6 +1,6 @@
 import Link from "next/link";
-import LoginForm from "./loginForm";
-import SocialSignIn from "./socialSignIn";
+import LoginForm from "@/componenets/auth/loginForm";
+import SocialSignIn from "@/componenets/auth/socialSignIn";
 export default function SignIn() {
 
   return (

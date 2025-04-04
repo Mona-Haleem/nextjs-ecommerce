@@ -14,7 +14,7 @@ const links =[
 ]
 export default function NavBar() {
   const{cartItems} = useCart()
-  const count = cartItems?.reduce((total:number,item:CartItemData)=>total + item.quantity,0)
+  const count = cartItems?.items?.reduce((total:number,item:CartItemData)=>total + item.quantity,0)
   const pathname = usePathname();
   console.log(pathname) 
   return (
