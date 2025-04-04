@@ -1,0 +1,63 @@
+{
+  "users": [
+    {
+      "id": "b43c8014-227f-4b0f-b3b1-74db2a3a21a6",
+      "name": "Mona Halleem",
+      "email": "monahalleem@gmail.com",
+      "image": "https://lh3.googleusercontent.com/a/ACg8ocIsM4jeq59mL5tKQcX9nvLVQJMYhC5Wa1XCCk9EPibBYHOj4w=s96-c"
+    },
+    {
+      "id": "3e61727a-3f53-4e2f-bbcc-983bd523c57e",
+      "name": "Mona Haleem",
+      "email": "test@gmail.com",
+      "image": "https://scontent.fcai19-3.fna.fbcdn.net/v/t1.30497-1/84628273_176159830277856_972693363922829312_n.jpg?stp=c379.0.1290.1290a_cp0_dst-jpg_s50x50_tt6&_nc_cat=1&ccb=1-7&_nc_sid=7565cd&_nc_ohc=T3A8sRb2a9wQ7kNvwHa8zmq&_nc_oc=AdmyihFe0o24MST26wPtTmkzPSpuVRd-YKhjWb824IQs9w3ojq8D03do8cH3Hm1v5Cc&_nc_zt=24&_nc_ht=scontent.fcai19-3.fna&edm=AP4hL3IEAAAA&oh=00_AYEBWiksIccnm9vm6Y15mnr8lgTXhrTr5QD02I5UpKiXnw&oe=681768D9"
+    }
+  ],
+  "cart": [],
+  "orders": [
+    {
+      "id": "1",
+      "userId": "3e61727a-3f53-4e2f-bbcc-983bd523c57e",
+      "items": [
+        {
+          "productId": "1",
+          "quantity": 2
+        },
+        {
+          "productId": "2",
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 100,
+      "date": "2023-10-01",
+      "status": "pending"
+    },
+    {
+      "id": "2",
+      "userId": "3e61727a-3f53-4e2f-bbcc-983bd523c57e",
+      "items": [
+        {
+          "productId": "3",
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 50,
+      "date": "2023-10-02",
+      "status": "shipped"
+    },
+    {
+      "id": "3",
+      "userId": "3e61727a-3f53-4e2f-bbcc-983bd523c57e",
+      "items": [
+        {
+          "productId": "4",
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 30,
+      "date": "2023-10-03",
+      "status": "delivered"
+    }
+
+  ]
+}
