@@ -13,7 +13,7 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
         {order.items.map((item) => (
           <li key={item.id} className="p-2 border-b border-gray-300 bg-white shadow-sm hover:bg-gray-100 transition " >
             <Link href={`/products/${item.id}`} className="hover:text-blue-500 flex justify-between">
-            <span>{item.title}</span>
+            <span>{item.name}</span>
             <span>{item.quantity} x ${item.price.toFixed(2)}</span>
           </Link>
           </li>

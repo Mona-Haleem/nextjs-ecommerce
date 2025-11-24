@@ -1,16 +1,13 @@
 "use client";
 
 import { CartItemData } from "@/lib/types";
-import {
-  getCartItems,
-  updateCartInStorage,
-} from "@/lib/api";
+import { getCartItems, updateCartInStorage } from "@/lib/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 export const useCart = () => {
   const { data: session } = useSession(); // get session
-  const userId = session?.user?.id;
+  const userId = session?.user?.id || "";
 
   const queryClient = useQueryClient();
 
@@ -29,7 +26,9 @@ export const useCart = () => {
     mutationFn: (updatedCart: CartItemData[]) =>
       updateCartInStorage(userId, updatedCart),
     onSuccess: () => {
-      queryClient.invalidateQueries(["cartItems", userId]);
+      queryClient.invalidateQueries({
+        queryKey: ["cartItems", userId],
+      });
     },
   });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
+import { Product } from "@/lib/types";
 
 export default function ItemRemoval({ itemId }: { itemId: number }) {
   const { cartItems, updateCart } = useCart();
@@ -9,7 +10,7 @@ export default function ItemRemoval({ itemId }: { itemId: number }) {
     if (!cartItems) return;
 
     const updatedItems = cartItems.items.filter(
-      (item) => item.id !== itemId
+      (item:Product) => item.id !== itemId
     );
 
     updateCart.mutate(updatedItems);

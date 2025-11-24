@@ -1,3 +1,6 @@
+import { AdapterUser } from "next-auth/adapters";
+import { AppUser } from "./types";
+
 // lib/db.ts
 const JSON_SERVER_URL = process.env.JSON_SERVER_URL || "http://localhost:3001";
 
@@ -28,7 +31,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
   }
 }
 
-export async function findUserByToken(token: string): Promise<User | null> {
+export async function findUserByToken(token: string): Promise<AppUser | null> {
   try {
     const response = await fetch(
       `${JSON_SERVER_URL}/users?id=${token}`
@@ -45,7 +48,7 @@ export async function findUserByToken(token: string): Promise<User | null> {
     return null;
   }
 }
-export async function createUser(user: User): Promise<User | null> {
+export async function createUser(user: AdapterUser): Promise<AppUser> {
   try {
        
     const createResponse = await fetch(`${JSON_SERVER_URL}/users`, {
@@ -60,10 +63,10 @@ export async function createUser(user: User): Promise<User | null> {
       throw new Error("Failed to create user");
     }
     
-    return user;
+    return user as AppUser;
   } catch (error) {
     console.error("Error creating user:", error);
-    return null;
+      throw new Error("Failed to create user");
   }
 }
 

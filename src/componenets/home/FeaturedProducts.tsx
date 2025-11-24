@@ -1,7 +1,8 @@
+import { Product } from '@/lib/types';
 import ProductCard from '../productCard';
 
 interface FeaturedProductsProps {
-  products: any[];
+  products: Product[];
 }
 
 export default function FeaturedProducts({ products }: FeaturedProductsProps) {

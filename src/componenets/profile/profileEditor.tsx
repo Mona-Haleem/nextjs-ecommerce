@@ -4,17 +4,17 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react'; 
 import FloatingLabelInput from './Input';
 
-async function updateUser(userId: string, data: { name: string; email: string,phoneNumber: string,username: string }) {
-  const res = await fetch(`http://localhost:3000/users/${userId}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    throw new Error('Failed to update user data');
-  }
-  return res.json();
-}
+// async function updateUser(userId: string, data: { name: string; email: string,phoneNumber: string,username: string }) {
+//   const res = await fetch(`http://localhost:3000/users/${userId}`, {
+//     method: 'PUT',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(data),
+//   });
+//   if (!res.ok) {
+//     throw new Error('Failed to update user data');
+//   }
+//   return res.json();
+// }
 
 export default function ProfileEditor() {
   const {data:session}  = useSession(); 
@@ -44,16 +44,16 @@ export default function ProfileEditor() {
     e.preventDefault();
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);  
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImagePreview(reader.result as string);  
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   if (!session) return <div>Loading session...</div>;
 

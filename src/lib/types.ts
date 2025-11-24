@@ -1,3 +1,5 @@
+import { AdapterUser } from "next-auth/adapters";
+
 export type Product = {
     id: number;
     title: string;
@@ -26,3 +28,8 @@ export type Order = {
     address: string;
     status: string;
   }
+
+  export type AppUser = AdapterUser & {
+  phoneNumber: string;
+  username : string
+};

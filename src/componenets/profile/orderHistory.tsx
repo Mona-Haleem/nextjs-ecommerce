@@ -1,6 +1,7 @@
 import React from "react";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
+import { Order } from "@/lib/types";
 
 async function fetchOrderHistory(userId: string) {
   const res = await fetch(`http://localhost:3001/orders?userId=${userId}`);
@@ -10,7 +11,7 @@ async function fetchOrderHistory(userId: string) {
   const data = await res.json();
 
   const sortedOrders = data.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    (a:Order, b:Order) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
   return sortedOrders;
 }
@@ -26,7 +27,7 @@ export default async function OrderHistory() {
 
       <ul className="w-full max-w-md bg-white rounded-lg max-h-20 overflow-y-auto shadow-lg">
         {!orders.length && <p className="text-center">No orders found.</p>}
-        {orders.map((order: any) => (
+        {orders.map((order:Order) => (
           <li
             className="p-2 border-b border-gray-300 bg-white shadow-sm hover:bg-gray-100 transition"
             key={order.id}

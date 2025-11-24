@@ -1,4 +1,5 @@
 import ProductCard from '@/componenets/productCard';
+import { Product } from '@/lib/types';
 import axios from 'axios';
 
 
@@ -24,7 +25,7 @@ const CategoryPage = async ({ params }: Props) => {
     <div className="mx-auto p-8">
       <h1 className="text-2xl font-bold uppercase mb-6">{category}</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {products.map((product: any) => (
+        {products.map((product: Product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

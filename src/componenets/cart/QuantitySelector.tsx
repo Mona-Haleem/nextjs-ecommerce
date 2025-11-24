@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
-import { CartItemData } from "@/lib/types";
+import { CartItemData, Product } from "@/lib/types";
 
 export default function QuantityAdjust({ item }: { item: CartItemData }) {
   const { cartItems, updateCart } = useCart();
@@ -9,7 +9,7 @@ export default function QuantityAdjust({ item }: { item: CartItemData }) {
   const handleQuantityChange = (newQuantity: number) => {
     if (!cartItems || newQuantity < 1) return;
 
-    const updatedItems = cartItems.items.map((cartItem) =>
+    const updatedItems = cartItems.items.map((cartItem:Product & {quantity:number}) =>
       cartItem.id === item.id
         ? { ...cartItem, quantity: newQuantity }
         : cartItem

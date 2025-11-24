@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import axios from "axios";
 import FloatingLabelInput from "../profile/Input";
+import { Product } from "@/lib/types";
 
 export default function CheckoutForm() {
   const { data: session } = useSession();
@@ -42,7 +43,7 @@ export default function CheckoutForm() {
 
     const shippingCost = selectedShipping?.price || 0;
     const itemsTotal = cartItems.items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+      (sum:number, item:Product & {quantity : number}) => sum + item.price * item.quantity,
       0
     );
 

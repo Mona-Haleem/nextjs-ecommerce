@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import ProfileEditor from './profileEditor';
-import UserData from './UserData';
-import OrderHistory from './orderHistory';
 
 
 export default function ProfileMode({children}: {children: React.ReactNode}) {

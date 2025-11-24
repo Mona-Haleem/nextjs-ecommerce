@@ -1,21 +1,15 @@
 import NextAuth from "next-auth";
-import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
 import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { z } from "zod";
 import { createUser, findUserByEmail, findUserByToken } from "@/lib/db";
+import { AppUser } from "./types";
 
 declare module "next-auth" {
-    interface Session {
-      user: {
-        id: string;
-        name?: string | null;
-        email?: string | null;
-        image?: string | null;
-        [key: string]: any; 
-      };
+    interface Session   {
+      user: AppUser
     }
   }
   
@@ -73,22 +67,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
         if (user) {
-            token.userId = user.id;
+            token.userId = user.id || "";
         }
         return token;
     },
     async session({ session, token }) {
         if (session.user) {
-          const user = await findUserByToken(token.userId);
+          const user = await findUserByToken(token.userId as string);
           if (user) {
              session.user = user;
           }else{
-            session.user = await createUser({...session.user,id:token.userId});
+            session.user = await createUser({...session.user,id:(token.userId as string)});
           }
         }
         return session;
       },
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return baseUrl;
     },
   },

@@ -15,7 +15,8 @@ export default function LoginForm() {
       setError("");
   
       try {
-        const result = await handleOAuthSignInCredentials(email, password);
+        //const result =
+         await handleOAuthSignInCredentials(email, password);
         
        
       } catch (error) {

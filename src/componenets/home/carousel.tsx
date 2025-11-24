@@ -15,7 +15,7 @@ export default function Carousel({images}:props) {
       }, 5000);
   
       return () => clearInterval(interval);
-    }, []);
+    }, [images]);
   
     return (
       <div className="relative h-[400px] w-1/2 border p-5 rounded-lg shadow-inner overflow-hidden">     
