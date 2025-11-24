@@ -2,9 +2,10 @@ import React from "react";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { Order } from "@/lib/types";
+import { SERVER_URL } from "@/lib/db";
 
 async function fetchOrderHistory(userId: string) {
-  const res = await fetch(`http://localhost:3001/orders?userId=${userId}`);
+  const res = await fetch(`${SERVER_URL}/api/orders?userId=${userId}`);
   if (!res.ok) {
     return [];
   }

@@ -8,27 +8,35 @@ import { createUser, findUserByEmail, findUserByToken } from "@/lib/db";
 import { AppUser } from "./types";
 
 declare module "next-auth" {
-    interface Session   {
-      user: AppUser
-    }
+  interface Session {
+    user: AppUser;
   }
-  
-  declare module "next-auth/jwt" {
-    interface JWT {
-      userId: string;
-    }
-  }
+}
 
- 
+declare module "next-auth/jwt" {
+  interface JWT {
+    userId: string;
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google,Facebook, Credentials({
-    id: "credentials",
-    name: "Credentials",
-    credentials: {
-      email: { label: "Email", type: "email" },
-      password: { label: "Password", type: "password" },
-    },
-    async authorize(credentials) {
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    Facebook({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+    }),
+    Credentials({
+      id: "credentials",
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
         try {
           const validatedCredentials = z
             .object({
@@ -38,16 +46,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             .parse(credentials);
 
           const user = await findUserByEmail(validatedCredentials.email);
-          
+
           if (!user) {
             return null;
           }
 
           const isPasswordValid = await compare(
-              validatedCredentials.password,
-              user.password
-            );
-            
+            validatedCredentials.password,
+            user.password
+          );
+
           if (!isPasswordValid) {
             return null;
           }
@@ -63,31 +71,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       },
     }),
-],
+  ],
   callbacks: {
     async jwt({ token, user }) {
-        if (user) {
-            token.userId = user.id || "";
-        }
-        return token;
+      if (user) {
+        token.userId = user.id || "";
+      }
+      return token;
     },
     async session({ session, token }) {
-        if (session.user) {
-          const user = await findUserByToken(token.userId as string);
-          if (user) {
-             session.user = user;
-          }else{
-            session.user = await createUser({...session.user,id:(token.userId as string)});
-          }
+      if (session.user) {
+        const user = await findUserByToken(token.userId as string);
+        if (user) {
+          session.user = user;
+        } else {
+          session.user = await createUser({
+            ...session.user,
+            id: token.userId as string,
+          });
         }
-        return session;
-      },
+      }
+      return session;
+    },
     async redirect({ baseUrl }) {
       return baseUrl;
     },
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, 
+    maxAge: 30 * 24 * 60 * 60,
   },
-})
+  secret: "f1e2d3c4b5a6978877665544332211ff99887766554433221100aabbccddeeff",
+});

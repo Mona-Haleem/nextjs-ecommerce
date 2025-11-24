@@ -6,6 +6,7 @@ import { useCart } from "@/hooks/useCart";
 import axios from "axios";
 import FloatingLabelInput from "../profile/Input";
 import { Product } from "@/lib/types";
+import { SERVER_URL } from "@/lib/db";
 
 export default function CheckoutForm() {
   const { data: session } = useSession();
@@ -59,9 +60,9 @@ export default function CheckoutForm() {
     };
 
     try {
-      await axios.post("http://localhost:3001/orders", newOrder);
+      await axios.post(`${SERVER_URL}/api/orders`, newOrder);
       
-      await axios.put(`http://localhost:3001/cart/${cartItems.id}`, {
+      await axios.put(`${SERVER_URL}/api/cart/${cartItems.id}`, {
         userId: session.user.id,
         items: [],
       });

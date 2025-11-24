@@ -1,5 +1,6 @@
 import OrderDetails from "@/componenets/order/OrderDetails";
 import OrderSummary from "@/componenets/order/OrderSummery";
+import { SERVER_URL } from "@/lib/db";
 import axios from "axios";
 
 
@@ -10,7 +11,7 @@ interface OrderPageProps {
 
 export default async function OrderPage ({ params }: OrderPageProps) {
   const {orderId} = await params;
-  const response = await axios.get(`http://localhost:3001/orders/${orderId}`);
+  const response = await axios.get(`${SERVER_URL}/api/orders/${orderId}`);
   const order = response?.data;
   return (
     <div className="container mx-auto p-4">

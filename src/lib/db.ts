@@ -2,7 +2,7 @@ import { AdapterUser } from "next-auth/adapters";
 import { AppUser } from "./types";
 
 // lib/db.ts
-const JSON_SERVER_URL = process.env.JSON_SERVER_URL || "http://localhost:3001";
+export const SERVER_URL = process.env.SERVER_URL || `http://localhost:3000/api`;
 
 export type User = {
   id: string;
@@ -16,7 +16,7 @@ export type UserWithoutPassword = Omit<User, "password">;
 export async function findUserByEmail(email: string): Promise<User | null> {
   try {
     const response = await fetch(
-      `${JSON_SERVER_URL}/users?email=${encodeURIComponent(email)}`
+      `${SERVER_URL}/users?email=${encodeURIComponent(email)}`
     );
     
     if (!response.ok) {
@@ -34,7 +34,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
 export async function findUserByToken(token: string): Promise<AppUser | null> {
   try {
     const response = await fetch(
-      `${JSON_SERVER_URL}/users?id=${token}`
+      `${SERVER_URL}/users?id=${token}`
     );
     
     if (!response.ok) {
@@ -51,7 +51,7 @@ export async function findUserByToken(token: string): Promise<AppUser | null> {
 export async function createUser(user: AdapterUser): Promise<AppUser> {
   try {
        
-    const createResponse = await fetch(`${JSON_SERVER_URL}/users`, {
+    const createResponse = await fetch(`${SERVER_URL}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export async function createUser(user: AdapterUser): Promise<AppUser> {
 
 export async function getAllUsers(): Promise<User[]> {
   try {
-    const response = await fetch(`${JSON_SERVER_URL}/users`);
+    const response = await fetch(`${SERVER_URL}/users`);
     
     if (!response.ok) {
       throw new Error("Failed to fetch users");

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { CartItemData } from "./types";
+import { SERVER_URL } from "./db";
 
 const BASE_URL = "https://fakestoreapi.com";
 
@@ -24,7 +25,7 @@ export const fetchCategories = async () => {
 };
 
 export const getCartItems = async (userId: string) => {
-  const response = await axios.get(`http://localhost:3001/cart?userId=${userId}`);
+  const response = await axios.get(`${SERVER_URL}/api/cart?userId=${userId}`);
   const carts = response.data;
   console.log("Carts:-----------------------------", carts);
   if (!carts.length) return null;
@@ -32,19 +33,19 @@ export const getCartItems = async (userId: string) => {
 };
 
 export const updateCartInStorage = async (userId: string, newCart: CartItemData[]) => {
-  const response = await axios.get(`http://localhost:3001/cart?userId=${userId}`);
+  const response = await axios.get(`${SERVER_URL}/api/cart?userId=${userId}`);
   const cart = response.data[0];
 
   if (!cart) throw new Error("Cart not found");
 
-  await axios.put(`http://localhost:3001/cart/${cart.id}`, {
+  await axios.put(`${SERVER_URL}/api/cart/${cart.id}`, {
     ...cart,
     items: newCart,
   });
 };
 
 export async function fetchUserData(userId: string) {
-  const res = await fetch(`http://localhost:3001/users/${userId}`);
+  const res = await fetch(`${SERVER_URL}/api/users/${userId}`);
   if (!res.ok) {
     throw new Error("Failed to fetch user data");
   }

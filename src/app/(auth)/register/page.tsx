@@ -3,6 +3,7 @@ import { hash } from "bcryptjs";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { SERVER_URL } from "@/lib/db";
 
 export default function Register() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function Register() {
     const hashedPassword = await hashPassword(password);
 
     try {
-      const response = await fetch("http://localhost:3001/users", {
+      const response = await fetch(`${SERVER_URL}/api/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password:hashedPassword }),

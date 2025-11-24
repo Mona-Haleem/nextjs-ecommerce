@@ -1,7 +1,8 @@
 // app/categories/page.tsx
 import CategoryCard from '@/componenets/CategoryCard';
 import axios from 'axios';
-
+export const dynamic = 'force-dynamic';
+export const revalidate = 60; 
 export const metadata = {
   title: "FakeStore - Categories",
 };

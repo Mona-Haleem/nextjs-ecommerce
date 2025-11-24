@@ -1,11 +1,13 @@
 import ProductList from '@/componenets/ProductsList';
 import { fetchProducts } from '@/lib/api';
 import React from 'react'
+export const dynamic = 'force-dynamic';
+export const revalidate = 60; 
 
 export const metadata = {
   title: "FakeStore - products",
 };
-export default async function Prodocts() {
+export default async function Products() {
     const  products  = await fetchProducts();
 
     return (

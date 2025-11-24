@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import FloatingLabelInput from './Input';
 
 // async function updateUser(userId: string, data: { name: string; email: string,phoneNumber: string,username: string }) {
-//   const res = await fetch(`http://localhost:3000/users/${userId}`, {
+//   const res = await fetch(`${SERVER_URL}/users/${userId}`, {
 //     method: 'PUT',
 //     headers: { 'Content-Type': 'application/json' },
 //     body: JSON.stringify(data),
