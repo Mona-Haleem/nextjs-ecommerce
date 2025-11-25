@@ -6,19 +6,38 @@ interface OrderSummaryProps {
 }
 
 const OrderSummary = ({ order }: OrderSummaryProps) => {
+  const shippingCost = order.items.reduce(
+    (acc, item) => (acc -= item.price * (1 - item.discountPercentage / 100)),
+    order.totalPrice
+  );
   return (
     <div className="bg-white p-6 rounded-md shadow-md mb-6">
       <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
       <ul>
         {order?.items.map((item) => (
-          <li key={item.id} className="p-2 border-b border-gray-300 bg-white shadow-sm hover:bg-gray-100 transition " >
-            <Link href={`/products/${item.id}`} className="hover:text-blue-500 flex justify-between">
-            <span>{item.title}</span>
-            <span>{item.stock} x ${item.price.toFixed(2)}</span>
-          </Link>
+          <li
+            key={item.id}
+            className="p-2 border-b border-gray-300 bg-white shadow-sm hover:bg-gray-100 transition "
+          >
+            <Link
+              href={`/products/${item.id}`}
+              className="hover:text-blue-500 flex justify-between"
+            >
+              <span>{item.title}</span>
+              <span>
+                {item.stock} x ${item.price.toFixed(2)}
+              </span>
+            </Link>
           </li>
         ))}
-        
+
+        <li
+          key="shippingCost"
+          className="p-2 border-b border-gray-300 flex justify-between bg-white shadow-sm hover:bg-gray-100 transition "
+        >
+          <span>Shipping Cost</span>
+          <span>${shippingCost.toFixed(2)}</span>
+        </li>
       </ul>
       <div className="flex justify-between font-semibold mt-4">
         <span>Total:</span>

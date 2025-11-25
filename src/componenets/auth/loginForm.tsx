@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+// import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -81,7 +81,7 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <div className="flex items-center">
           <input
             id="remember-me"
@@ -105,7 +105,7 @@ export default function LoginForm() {
             Forgot your password?
           </Link>
         </div>
-      </div>
+      </div> */}
 
       <div>
         <button

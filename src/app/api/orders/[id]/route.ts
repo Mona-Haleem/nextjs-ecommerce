@@ -11,14 +11,12 @@ export async function GET(
   const order = await getOrderById(id);
   if (!order)
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
-  console.log("order found",order.status , order.expectedDeliveryDate)
- // if( order.status == "delivered") return NextResponse.json(order);
+  if( order.status == "delivered") return NextResponse.json(order);
   const status = calculateShippingStatus(order)
   if (status !== order.status) {
     await updateOrder(order.id, { status });
     order.status = status;
   }
-  console.log("ored" , order.status ,order.expectedDeliveryDate)
   return NextResponse.json(order);
 }
 

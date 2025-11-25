@@ -24,7 +24,7 @@ export default async function OrderPage ({ params }: OrderPageProps) {
     );
   }
 
-  // Update status if needed (same logic as in your API route)
+
   if (order.status !== "delivered") {
     const status = await calculateShippingStatus(order);
     if (status !== order.status) {

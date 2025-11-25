@@ -8,7 +8,7 @@ export default auth(async function middleware(req) {
     const pathname = nextUrl.pathname;
 
     // Protected routes that require authentication
-    const protectedPaths = ["/cart", "/profile", "/checkout"];
+    const protectedPaths = ["/cart", "/profile", "/order"];
     const isProtected = protectedPaths.some(
       (path) => pathname === path || pathname.startsWith(`${path}/`)
     );
@@ -51,5 +51,5 @@ export default auth(async function middleware(req) {
 // };
 
 export const config = {
-  matcher: ["/cart", "/profile", "/checkout", "/login", "/register"],
+  matcher: ["/cart", "/profile", "/order/:id", "/login", "/register"],
 };

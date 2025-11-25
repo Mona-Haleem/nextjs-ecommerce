@@ -45,7 +45,7 @@ export default function CheckoutForm() {
     const shippingCost = selectedShipping?.price || 0;
     const itemsTotal = cart.items.reduce(
       (sum: number, item: Product & { stock: number }) =>
-        sum + (item.price * (1 - item.discountPercentage)) * item.stock,
+        sum + (item.price * (1 - item.discountPercentage/ 100)) * item.stock,
       0
     );
 

@@ -3,7 +3,7 @@ import { Product } from "@/lib/types";
 
 export default function CartTotal({ cartItems }: { cartItems: Product[] }) {
   const totalPrice = cartItems?.reduce((total, item) => {
-    return total + item.price * (1 - (item.discountPercentage || 0)) * item.stock;
+    return total + item.price * (1 - (item.discountPercentage/100 || 0)) * item.stock;
   }, 0);
 
   return (

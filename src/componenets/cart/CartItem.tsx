@@ -51,7 +51,6 @@ const CartItemCard = memo(
 
     return (
       <div className="flex gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-        {/* Product Image */}
         <div className="relative w-24 h-24 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden">
           <Image
             src={item.thumbnail || "/placeholder.png"}
@@ -75,7 +74,7 @@ const CartItemCard = memo(
             </p>
             {item.discountPercentage > 0 && (
               <span className="px-2 py-1 text-red-500 text-xs ">
-                -{item.discountPercentage.toFixed(0)}% OFF
+                -{item.discountPercentage.toFixed(2)}% OFF
               </span>
             )}
           </div>
@@ -90,10 +89,26 @@ const CartItemCard = memo(
               size="sm"
             />
 
+          </div>
+        </div>
+
+        <div className="flex flex-col ml-3 min-w-12 items-end justify-between">
+         <div>
+
+          <p className="text-lg font-bold text-gray-900">
+            ${itemTotal.toFixed(2)}
+          </p>
+
+          <p className="text-xs text-gray-500">
+            {item.stock} {item.stock === 1 ? "item" : "items"}
+          </p>
+
+         </div>
+          
             <button
               onClick={handleRemove}
               disabled={isUpdating}
-              className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center relative bottom-1 gap-1 text-sm text-red-600 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isUpdating ? (
                 <FiLoader className="w-4 h-4 animate-spin" />
@@ -102,17 +117,6 @@ const CartItemCard = memo(
               )}
               Remove
             </button>
-          </div>
-        </div>
-
-        <div className="flex flex-col items-end justify-between">
-          <p className="text-lg font-bold text-gray-900">
-            ${itemTotal.toFixed(2)}
-          </p>
-
-          <p className="text-xs text-gray-500">
-            {item.stock} {item.stock === 1 ? "item" : "items"}
-          </p>
         </div>
       </div>
     );

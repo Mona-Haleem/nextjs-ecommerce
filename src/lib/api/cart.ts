@@ -4,7 +4,6 @@ import { CartItemData } from "../types";
 export const getCartItems = async (userId: string) => {
   const response = await apiClient.get(`/api/cart?userId=${userId}`);
   const carts = response.data;
-  // console.log("Carts:", carts);
   if (!carts.length) return null;
   return carts[0];
 };

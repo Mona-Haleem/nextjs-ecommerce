@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart";
 
 export function useCartData(userId: string | undefined) {
-//  console.log("userishere :" , !!userId )
   return useQuery({
     queryKey: ["cart", userId],
     queryFn: () => getCartItems(userId!),

@@ -48,7 +48,7 @@ export interface Product {
 
 export interface ProductsResponse {
   products: Product[];
-  total?: number;
+  total: number;
   skip?: number;
   limit?: number;
 }

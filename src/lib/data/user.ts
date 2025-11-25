@@ -46,7 +46,6 @@ export async function createUser(
     // Check if user already exists
     const existing = await findUserByEmail(user.email || "");
     if (existing) {
-      // console.log("creating new user:", "user already exist ");
 
       throw new Error("User already exists");
     }
@@ -60,7 +59,6 @@ export async function createUser(
       provider: user.provider,
       providerAccountId: user.providerAccountId,
     };
-    // console.log("creating new user:", newUser);
 
     // Store user
     await kv.set(`user:${newUser.id}`, newUser);

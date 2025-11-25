@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 export default async function Home() {
-  const { products } = await fetchProducts();
+  const { products } = await fetchProducts({limit:5 ,skip:Math.floor(Math.random()*20)});
   return (
     <main className="w-full mx-auto p-8 space-y-12">
       <HeroSection images={products?.map((product: Product) => product.thumbnail)} />

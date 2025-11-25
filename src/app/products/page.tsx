@@ -1,19 +1,18 @@
-import ProductList from '@/componenets/ProductsList';
-import { fetchProducts } from '@/lib/api/products';
-import React from 'react'
+import ProductsPageClient from "@/componenets/Products/ProductsPageClient";
+
 export const dynamic = 'force-dynamic';
-export const revalidate = 60; 
 
 export const metadata = {
-  title: "FakeStore - products",
+  title: "FakeStore - Products",
+  description: "Browse our complete product catalog"
 };
-export default async function Products() {
-    const { products } = await fetchProducts();
 
-    return (
-      <div className="mx-auto p-8">
-        <h1 className="text-3xl font-bold uppercase mb-6">All Products</h1>
-        <ProductList products={products}/>
-      </div>
-    );
+export default async function ProductsPage() {
+
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <ProductsPageClient />
+    </div>
+  );
 }

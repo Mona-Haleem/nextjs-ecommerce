@@ -23,9 +23,16 @@ export default function HeroSection({ images }: HeroSectionProps) {
         </p>
 
         <Link
-          href="/category"
+          href="/products"
           className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium 
             hover:bg-blue-700 transition"
+        >
+          View All Products
+        </Link>
+        <Link
+          href="/category"
+          className="inline-block mx-5 border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-medium 
+            hover:bg-blue-700 hover:text-white transition"
         >
           Browse Categories
         </Link>

@@ -9,7 +9,6 @@ export default async function UserData() {
  
   
   const user = await findUserById(userId!);
-  console.log(user,session ,userId)
   return (
     <div className="text-center p-4">
       <div className="flex items-center justify-center p-10">
@@ -34,10 +33,10 @@ export default async function UserData() {
             <span className="font-bold">Email: </span>
             {user?.email || "N/A"}
           </p>
-          <p className="text-lg mb-6">
+          {/* <p className="text-lg mb-6">
             <span className="font-bold">Phone Number: </span>
             {user?.phoneNumber || "N/A"}
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

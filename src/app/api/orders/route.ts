@@ -27,7 +27,6 @@ export async function GET(request: NextRequest) {
       }
       )
     );
-    console.log(orders)
     return NextResponse.json(orders);
   } catch (error) {
     console.log(error);

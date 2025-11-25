@@ -27,7 +27,6 @@ const AddToCartButton = memo(function AddToCartButton({
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
   const [justAdded, setJustAdded] = useState(false);
-  console.log(session, status);
   // Only subscribe to what we need
   const { isInCart, getItemQuantity } = useCartSelectors(userId);
   const { addToCart, isUpdating } = useCartActions(userId, {

@@ -8,9 +8,7 @@ export function calculateExpectedDeliveryDate(
     /Ships(?:\s+in)?\s+(?:(\d+)(?:-(\d+))?\s+)?(month|week|day|business day|overnight)s?/i;
   const daysToDeliver = items.reduce((acc: number, item: Product) => {
     const match = item.shippingInformation?.match(regex) ?? null;
-    console.log(match,item.shippingInformation)
     const deliverIn = convertShippingTime(match);
-    console.log(deliverIn)
     return deliverIn > acc ? deliverIn : acc;
   }, 0);
 
@@ -20,7 +18,6 @@ export function calculateExpectedDeliveryDate(
 }
 export function calculateShippingStatus(order: Order) {
   const today = new Date();
-  console.log(order)
   if (!order.expectedDeliveryDate) {
     order.expectedDeliveryDate = calculateExpectedDeliveryDate(
       order.items,
@@ -29,7 +26,6 @@ export function calculateShippingStatus(order: Order) {
   }
 
   const expectedDay = new Date(order.expectedDeliveryDate);
-  console.log(expectedDay)
   const rand = Math.random();
 
   let status: Order["status"];
