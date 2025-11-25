@@ -2,15 +2,17 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useCart } from "@/hooks/useCart";
-import axios from "axios";
 import FloatingLabelInput from "../profile/Input";
-import { Product } from "@/lib/types";
-import { SERVER_URL } from "@/lib/db";
+import { Order, Product } from "@/lib/types";
+import { useCart } from "@/hooks/useCart";
+import { createOrderApi } from "@/lib/api/order";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutForm() {
   const { data: session } = useSession();
-  const { cartItems, updateCart } = useCart();
+  const userId = session?.user?.id;
+  const { cart, clearCart } = useCart(userId);
+  const router = useRouter();
 
   const shippingOptions = [
     { name: "Standard Shipping", price: 5.0 },
@@ -33,41 +35,36 @@ export default function CheckoutForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!session?.user?.id || !cartItems) {
-      alert("You must be logged in and have items in your cart.");
-      return;
-    }
-
     const selectedShipping = shippingOptions.find(
       (option) => option.name === formData.shipping
     );
-
+    if (cart.items.length == 0) {
+      alert("Can't place the order without items");
+      return;
+    }
     const shippingCost = selectedShipping?.price || 0;
-    const itemsTotal = cartItems.items.reduce(
-      (sum:number, item:Product & {quantity : number}) => sum + item.price * item.quantity,
+    const itemsTotal = cart.items.reduce(
+      (sum: number, item: Product & { stock: number }) =>
+        sum + (item.price * (1 - item.discountPercentage)) * item.stock,
       0
     );
 
     const totalPrice = itemsTotal + shippingCost;
 
     const newOrder = {
-      userId: session.user.id,
-      items: cartItems.items,
+      userId: session?.user?.id,
+      items: cart.items,
       totalPrice,
       address: formData.address,
       date: new Date().toISOString().split("T")[0],
-      status: "pending",
     };
-
+    
     try {
-      await axios.post(`${SERVER_URL}/api/orders`, newOrder);
-      
-      await axios.put(`${SERVER_URL}/api/cart/${cartItems.id}`, {
-        userId: session.user.id,
-        items: [],
-      });
-
-      updateCart.mutate([]); 
+      const order = await createOrderApi(
+        newOrder as Omit<Order, "id" | "date"|"status"|"expectedDeliveryDate">
+      );
+      await clearCart();
+      router.push(`/order/${order.id}`);
 
       alert("Order placed successfully!");
     } catch (error) {

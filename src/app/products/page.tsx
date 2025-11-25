@@ -1,5 +1,5 @@
 import ProductList from '@/componenets/ProductsList';
-import { fetchProducts } from '@/lib/api';
+import { fetchProducts } from '@/lib/api/products';
 import React from 'react'
 export const dynamic = 'force-dynamic';
 export const revalidate = 60; 
@@ -8,7 +8,7 @@ export const metadata = {
   title: "FakeStore - products",
 };
 export default async function Products() {
-    const  products  = await fetchProducts();
+    const { products } = await fetchProducts();
 
     return (
       <div className="mx-auto p-8">

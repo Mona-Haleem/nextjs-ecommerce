@@ -1,7 +1,7 @@
 "use client";
 
+import { fetchProductById, fetchProducts } from "@/lib/api/products";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProducts, fetchProductById } from "@/lib/api";
 
 export const useProducts = () => {
   return useQuery({

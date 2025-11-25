@@ -1,12 +1,9 @@
-type CartItem = {
-  id: number;
-  price: number;
-  quantity: number;
-};
+import { Product } from "@/lib/types";
 
-export default function CartTotal({ cartItems }: { cartItems: CartItem[] }) {
+
+export default function CartTotal({ cartItems }: { cartItems: Product[] }) {
   const totalPrice = cartItems?.reduce((total, item) => {
-    return total + item.price * item.quantity;
+    return total + item.price * (1 - (item.discountPercentage || 0)) * item.stock;
   }, 0);
 
   return (

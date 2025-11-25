@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
+import Image from "next/image";
 
 const Avatar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,7 +12,7 @@ const Avatar = () => {
   const router = useRouter();
   const handleLogout = async () => {
     setMenuOpen(false);
-    await signOut(); 
+    await signOut();
   };
 
   const navToProfile = () => {
@@ -22,14 +23,18 @@ const Avatar = () => {
   return (
     <div className="relative">
       <button
-        onClick={() => (session ? setMenuOpen(!menuOpen) : router.push("/login"))}
-        className="text-gray-600 dark:text-white hover:text-gray-900 focus:outline-none"
+        onClick={() =>
+          session ? setMenuOpen(!menuOpen) : router.push("/login")
+        }
+        className="text-gray-600 w-8 h-8 overflow-hidden dark:text-white hover:text-gray-900 focus:outline-none"
       >
         {session?.user?.image ? (
-          <img
-            src={session.user.image}
-            alt="User"
-            className="w-8 h-8 rounded-full border border-gray-300"
+          <Image
+            src={session.user.image || "/avatar.png"}
+            alt={session.user.username || "user"}
+            width={32}
+            height={32}
+            className="object-contain rounded-full"
           />
         ) : (
           <FaUserCircle size={24} />

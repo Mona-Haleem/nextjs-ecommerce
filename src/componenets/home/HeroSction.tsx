@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import Carousel from './carousel';
+import Link from "next/link";
+import Carousel from "./carousel";
 
 interface HeroSectionProps {
   images: string[];
@@ -7,14 +7,25 @@ interface HeroSectionProps {
 
 export default function HeroSection({ images }: HeroSectionProps) {
   return (
-    <div className='flex items-center justify-between'>
-      <Carousel images={images} />
-      <section className="text-center space-y-4">
-        <h1 className="text-4xl font-bold">Welcome to FakeStore</h1>
-        <p className="text-gray-600">Find the best products in fashion, electronics, and more!</p>
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
+      <div className="w-full lg:w-1/2">
+        <Carousel images={images} />
+      </div>
+
+      <section className="w-full lg:w-1/2 text-center lg:text-left space-y-5">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-snug">
+          Welcome to <span className="text-blue-600">FakeStore</span>
+        </h1>
+
+        <p className="text-gray-600 text-base sm:text-lg max-w-md mx-auto lg:mx-0">
+          Find the best deals across fashion, electronics, accessories, and
+          more.
+        </p>
+
         <Link
-          href="/categories"
-          className="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+          href="/category"
+          className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium 
+            hover:bg-blue-700 transition"
         >
           Browse Categories
         </Link>

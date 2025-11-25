@@ -1,12 +1,12 @@
 'use client'
-import {handleOAuthSignIn} from "@/lib/authActions";
+import { signIn } from "next-auth/react";
 
 export default function SocialSignIn() {
 
     return (
     <div className="flex flex-col gap-4">
           <button
-            onClick={() => handleOAuthSignIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
             className="group relative flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             <span className="mr-2">
@@ -33,7 +33,7 @@ export default function SocialSignIn() {
           </button>
 
           <button
-            onClick={() => handleOAuthSignIn("facebook")}
+            onClick={() => signIn("facebook",{callbackUrl:"/"})}
             className="group relative flex w-full justify-center rounded-md border border-gray-300 bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700"
           >
             <span className="mr-2">

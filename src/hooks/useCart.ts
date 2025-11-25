@@ -1,36 +1,23 @@
-"use client";
+import { useCartActions, useCartData, useCartMutations, useCartSelectors } from "./CartHooks";
 
-import { CartItemData } from "@/lib/types";
-import { getCartItems, updateCartInStorage } from "@/lib/api";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+interface UseCartActionsOptions {
+  onSuccess?: (action: string) => void;
+  onError?: (error: Error) => void;
+}
 
-export const useCart = () => {
-  const { data: session } = useSession(); // get session
-  const userId = session?.user?.id || "";
+export function useCart(userId: string | undefined, options?: UseCartActionsOptions) {
+  const { data: cart, isLoading, error } = useCartData(userId);
+  const { clearCart, isUpdating } = useCartMutations(userId);
+  const actions = useCartActions(userId, options);
+  const selectors = useCartSelectors(userId);
 
-  const queryClient = useQueryClient();
-
-  const {
-    data: cartItems,
+  return {
+    cart,
+    ...selectors,
+    ...actions,
+    clearCart: clearCart.mutateAsync,
     isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["cartItems", userId],
-    queryFn: () => getCartItems(userId),
-    enabled: !!userId, // don't run query until we have userId
-    staleTime: 1000 * 60 * 5,
-  });
-
-  const updateCart = useMutation({
-    mutationFn: (updatedCart: CartItemData[]) =>
-      updateCartInStorage(userId, updatedCart),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["cartItems", userId],
-      });
-    },
-  });
-
-  return { cartItems, isLoading, isError, updateCart };
-};
+    error,
+    isUpdating: isUpdating || actions.isUpdating,
+  };
+}

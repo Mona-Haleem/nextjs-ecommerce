@@ -1,26 +1,21 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
-import { Product } from "@/lib/types";
+import { useSession } from "next-auth/react";
 
 export default function ItemRemoval({ itemId }: { itemId: number }) {
-  const { cartItems, updateCart } = useCart();
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+  const { cart, removeFromCart } = useCart(userId);
 
   const handleRemoveItem = () => {
-    if (!cartItems) return;
+    if (!cart) return;
 
-    const updatedItems = cartItems.items.filter(
-      (item:Product) => item.id !== itemId
-    );
-
-    updateCart.mutate(updatedItems);
+    removeFromCart(itemId);
   };
 
   return (
-    <button
-      onClick={handleRemoveItem}
-      className="text-red-500 hover:underline"
-    >
+    <button onClick={handleRemoveItem} className="text-red-500 hover:underline">
       Remove
     </button>
   );

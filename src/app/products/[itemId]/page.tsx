@@ -1,50 +1,60 @@
-import AddToCartButton from '@/componenets/addToCartBtn';
-import axios from 'axios';
-import Image from 'next/image';
+import ProductImageGallery from "@/componenets/product/ProductImageGallery";
+import ProductInfo from "@/componenets/product/ProductInfoComponenet";
+import ProductReviews from "@/componenets/product/ProductReviewComponenet";
+import ProductSpecifications from "@/componenets/product/ProductSpecifications";
+import { fetchProductById } from "@/lib/api/products";
+import { Product } from "@/lib/types";
+
 
 type ProductProps = {
-  params: Promise<{ itemId: number }>;
+  params: Promise<{ itemId: string }>;
 };
 
-export async function generateMetadata({ params }: ProductProps){
+export async function generateMetadata({ params }: ProductProps) {
   const { itemId } = await params;
-  const { data: product } = await axios.get(`https://fakestoreapi.com/products/${itemId}`);
+  const product = await fetchProductById(Number(itemId));
+  
   return {
     title: `${product.title} - FakeStore`,
-   };
+    description: product.description,
+    openGraph: {
+      title: product.title,
+      description: product.description,
+      images: [product.thumbnail || product.image || product.images?.[0]],
+    },
+  };
 }
 
 const ProductPage = async ({ params }: ProductProps) => {
   const { itemId } = await params;
+  const product: Product = await fetchProductById(Number(itemId));
 
-  const { data: product } = await axios.get(`https://fakestoreapi.com/products/${itemId}`);
+  const productImages = product.images || (product.image ? [product.image] : []);
 
   return (
-    <div className="max-w-7xl mx-auto p-8">
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="relative w-full md:w-1/2 aspect-[4/5]">
-          <Image
-            src={product.image}
-            alt={product.title}
-            fill
-            className="object-contain bg-white p-2"
-            sizes="(max-width: 768px) 100vw, 50vw"
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          <ProductImageGallery
+            images={productImages}
+            title={product.title}
+            thumbnail={product.thumbnail}
           />
+
+          <ProductInfo product={product} />
         </div>
-        <div className="flex-1 space-y-4">
-          <h1 className="text-2xl font-bold text-black">{product.title}</h1>
-          <p className="text-sm text-gray-500">{product.category}</p>
-          <p className="text-lg text-purple-600 font-semibold"><b>Price: </b>${product.price}</p>
-          <p className="text-black font-bold text-lg">Description: </p>
-          <p className="text-gray-700 ml-5"> {product.description}</p>
-         <AddToCartButton product={product}/>
-        </div>
+
+        <ProductSpecifications product={product} />
+
+        {product.reviews && product.reviews.length > 0 && (
+          <ProductReviews 
+            reviews={product.reviews} 
+            averageRating={product.rating} 
+          />
+        )}
       </div>
     </div>
   );
 };
 
 export default ProductPage;
-
-
-

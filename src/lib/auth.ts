@@ -4,8 +4,14 @@ import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { z } from "zod";
-import { createUser, findUserByEmail, findUserByToken } from "@/lib/db";
+import {
+  createUser,
+  findUserByEmail,
+  findUserById,
+  findUserByProviderId,
+} from "./data/user";
 import { AppUser } from "./types";
+import { env } from "process";
 
 declare module "next-auth" {
   interface Session {
@@ -19,15 +25,17 @@ declare module "next-auth/jwt" {
   }
 }
 
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true, 
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: env.GOOGLE_CLIENT_ID!,
+      clientSecret: env.GOOGLE_CLIENT_SECRET!,
     }),
     Facebook({
-      clientId: process.env.FACEBOOK_CLIENT_ID!,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+      clientId: env.FACEBOOK_CLIENT_ID!,
+      clientSecret: env.FACEBOOK_CLIENT_SECRET!,
     }),
     Credentials({
       id: "credentials",
@@ -38,68 +46,119 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         try {
-          const validatedCredentials = z
+          const validated = z
             .object({
               email: z.string().email(),
               password: z.string().min(6),
             })
             .parse(credentials);
 
-          const user = await findUserByEmail(validatedCredentials.email);
+          const user = await findUserByEmail(validated.email);
+          if (!user || !user.password) return null;
 
-          if (!user) {
-            return null;
-          }
-
-          const isPasswordValid = await compare(
-            validatedCredentials.password,
-            user.password
-          );
-
-          if (!isPasswordValid) {
-            return null;
-          }
+          const isValid = await compare(validated.password, user.password);
+          if (!isValid) return null;
 
           return {
             id: user.id,
-            name: user.name,
+            username: user.username ?? "",
             email: user.email,
+            image: user.image,
+            phoneNumber: user.phoneNumber,
           };
-        } catch (error) {
-          console.error("Auth error:", error);
+        } catch (err) {
+          console.error("Authorize error:", err);
           return null;
         }
       },
     }),
   ],
+
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.userId = user.id || "";
+    async jwt({ token, user, account }) {
+      if (user && account) {
+        if (account.provider === "credentials") {
+          token.userId = user.id!;
+          return token;
+        }
+
+        const provider = account.provider;
+        const providerAccountId = account.providerAccountId;
+
+        let dbUser = await findUserByProviderId(provider, providerAccountId);
+
+        if (!dbUser && user.email) {
+          dbUser = await findUserByEmail(user.email);
+        }
+
+        if (!dbUser) {
+          dbUser = await createUser({
+            username: user.name ?? "",
+            email: user.email ?? "",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            emailVerified: (user as any).email_verified ?? null,
+            provider,
+            providerAccountId,
+          });
+        } else {
+          // Optional: if dbUser exists but providerAccountId is not linked, link it here using a helper
+          //      await linkProviderToUser(dbUser.id, provider, providerAccountId);
+        }
+
+        token.userId = dbUser.id;
+        return token;
       }
+
       return token;
     },
+
     async session({ session, token }) {
-      if (session.user) {
-        const user = await findUserByToken(token.userId as string);
-        if (user) {
-          session.user = user;
+      if (token.userId) {
+        const dbUser = await findUserById(token.userId);
+        if (dbUser) {
+          session.user = dbUser;
         } else {
-          session.user = await createUser({
-            ...session.user,
-            id: token.userId as string,
-          });
+          // If user not found, do NOT create a new DB user here.
+          // Instead, let frontend handle missing user (e.g. force logout, show an error, or re-authenticate).
+          // session.user remains undefined to indicate no linked user.
         }
       }
       return session;
     },
-    async redirect({ baseUrl }) {
+
+    /**
+     * Optional signIn callback
+     */
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   // if (account?.provider !== "credentials" && profile?.email_verified === false) return false;
+    //   return true;
+    // },
+
+    /**
+     * Redirects: safe handling of relative and same-origin URLs
+     */
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      try {
+        const incoming = new URL(url);
+        if (incoming.origin === baseUrl) return url;
+      } catch (err) {
+        console.log(err);
+        // malformed URL -> fallback
+      }
       return baseUrl;
     },
   },
+
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
+
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
-  secret: "f1e2d3c4b5a6978877665544332211ff99887766554433221100aabbccddeeff",
+
+  secret: env.NEXTAUTH_SECRET,
 });
